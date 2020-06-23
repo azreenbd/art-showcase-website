@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+Route::resource('artist', 'ArtistsController');
+Route::get('/{id}', 'ArtistsController@show'); // Shorter artist url
