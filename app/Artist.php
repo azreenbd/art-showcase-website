@@ -17,4 +17,10 @@ class Artist extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    // Artist has many artworks
+    public function artworks()
+    {
+        return $this->hasMany('App\Artwork');
+    }
 }

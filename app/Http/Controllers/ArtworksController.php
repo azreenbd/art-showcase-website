@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Image;
 use Auth;
+use Image;
 use App\Artist;
-use App\User;
 use App\Artwork;
+use App\User;
 
-class ArtistsController extends Controller
+class ArtworksController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -28,9 +28,7 @@ class ArtistsController extends Controller
      */
     public function index()
     {
-        $artists = Artist::all();
-
-        return view('artists.index')->with('artists', $artists);
+        //
     }
 
     /**
@@ -44,8 +42,8 @@ class ArtistsController extends Controller
 
         // Check if user have an artist profile
         $artist_exist = Auth::user()->artist->exists();
-        if(!$artist_exist) {
-            return view('artists.create');
+        if($artist_exist) {
+            return view('artworks.upload');
         }
         else {
             return redirect('/dashboard');
@@ -62,27 +60,32 @@ class ArtistsController extends Controller
     {
         // Data validation
         $validate = $request->validate([
-            'avatar' => ['nullable', 'image'],
-            'name' => ['required', 'string', 'max:255'],
-            'url' => ['required', 'string', 'max:255', 'unique:artists', 'alpha_dash'],
-            'fullname' => ['nullable', 'string', 'max:255'],
-            'about' => ['nullable', 'string', 'max:500'],
+            'artwork' => ['required', 'image'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:500'],
         ]);
         
         // If data is valid
         if($validate) {
             $user_id = Auth::user()->id;
 
+            //return dd(Auth::user()->artist);
+
             // Check if user already have an artist profile
             $artist_exist = Auth::user()->artist->exists();
-            if(!$artist_exist) {
-                // Create new artist
-                $artist = new Artist;
+            if($artist_exist) {
+                // Get artist data
+                $artist = User::find($user_id)->artist;
 
-                // Manipulate avatar image
-                if($request->hasFile('avatar')) {
-                    $avatar = $request->file('avatar');
-                    $filename = Auth::user()->id . '_' . time() . '.jpg';
+                //return dd($artist);
+                
+                // Create new artwork
+                $artwork = new Artwork;
+
+                // Manipulate artwork image
+                if($request->hasFile('artwork')) {
+                    $avatar = $request->file('artwork');
+                    $filename = $artist->id . '_' . time() . '.jpg';
 
                     $height = Image::make($avatar)->height();
                     $width = Image::make($avatar)->width();
@@ -90,37 +93,34 @@ class ArtistsController extends Controller
                     // Convert and upload the image
                     if($height > $width) {
                         // Resize width
-                        Image::make($avatar)->resize(460, null, function ($constraint) {
+                        Image::make($avatar)->resize(1000, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/avatar/' . $filename) );
+                        })->encode('jpg', 50)->save( public_path('/img/artwork/' . $filename) );
                     } else {
                         // Resize height
-                        Image::make($avatar)->resize(null, 460, function ($constraint) {
+                        Image::make($avatar)->resize(null, 1000, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/avatar/' . $filename) );
+                        })->encode('jpg', 50)->save( public_path('/img/artwork/' . $filename) );
                     }
 
-                    $artist->avatar = $filename;
+                    $artwork->filename = $filename;
                 }
 
                 // Set request data to class(model)
-                $artist->name = $request['name'];
-                $artist->fullname = $request['fullname'];
-                $artist->url = $request['url'];
-                $artist->about = $request['about'];
-                $artist->user_id = $user_id;
+                $artwork->title = $request['title'];
+                $artwork->description = $request['description'];
+                $artwork->artist_id = $artist->id;
 
-                $artist->save();
+                $artwork->save();
 
-                return redirect('/artist/'.$artist->url);
-            } else {
+                return redirect('/art/'.$artwork->id);
+            }
+            else {
                 return redirect('/dashboard');
             }
         }
-        return redirect()->back();
-        
     }
 
     /**
@@ -131,16 +131,9 @@ class ArtistsController extends Controller
      */
     public function show($id)
     {
-        // $id uses artist url instead of artist id
-        $artist = Artist::where('url', $id)->first();
-        $artworks = Artist::find($artist->id)->artworks;
+        $artwork = Artwork::find($id);
 
-        if($artist) {
-            return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks);
-        } 
-        else {
-            abort(404);
-        }
+        return view('artworks.show')->with('artwork', $artwork);
     }
 
     /**

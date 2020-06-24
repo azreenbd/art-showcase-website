@@ -8,8 +8,20 @@
                 <div class="card-header">Create Artist Profile</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('artist.store') }}">
+                    <form method="POST" action="{{ route('artist.store') }}" enctype="multipart/form-data">
                         @csrf
+                        
+                        <div class="form-group row">
+                            <img src="/img/avatar/_default.jpg">
+                            <input id="avatar" type="file" accept=".jpg, .jpeg, .png" class=" form-control-file border rounded p-2" name="avatar">
+
+                            @error('avatar')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>File upload only accept image file.</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Artist name') }} <span class="text-danger">*</span></label>

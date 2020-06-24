@@ -17,7 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Dashboard
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
+// Artist
 Route::resource('artist', 'ArtistsController');
 Route::get('/{id}', 'ArtistsController@show'); // Shorter artist url
+
+// Artwork
+Route::resource('art', 'ArtworksController');

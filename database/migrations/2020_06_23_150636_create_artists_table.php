@@ -20,6 +20,7 @@ class CreateArtistsTable extends Migration
             $table->string('fullname')->nullable();
             $table->mediumText('about')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->string('avatar')->default('_default.jpg');
             $table->string('website')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();

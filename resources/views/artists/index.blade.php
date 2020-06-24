@@ -10,7 +10,11 @@
                 <div class="card-body">
                     @if(count($artists) > 0)
                         @foreach ($artists as $artist)
-                            <h5><a href="{{ url('/'.$artist->url) }}">{{ $artist->name }}</a></h5>
+                            
+                            <a href="{{ url('/'.$artist->url) }}">
+                                <img src="/img/avatar/{{ $artist->avatar }}" width="150px" height="150px">
+                                <h5>{{ $artist->name }}</h5>
+                            </a>
                         @endforeach
                     @else
                         <p>No artist available.</p>
