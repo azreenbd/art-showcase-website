@@ -27,7 +27,21 @@ class DashboardController extends Controller
     {
         $user_id = Auth::user()->id;
         $user = User::find($user_id);
+        $follows = $user->follows;
+        $feeds = array();
 
-        return view('dashboard.dashboard')->with('artist', $user->artist);
+        foreach($follows as $artist) {
+            foreach($artist->artworks as $artwork) {
+                array_push($feeds, $artwork);
+            }
+        }
+
+        //dd($feeds);
+
+        // Sort by newest artwork
+        // change $feeds to collect($feeds) so you can use sortBy
+        $feeds = collect($feeds)->sortByDesc('created_at');
+
+        return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds);
     }
 }

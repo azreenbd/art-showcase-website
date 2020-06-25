@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Auth::routes();
@@ -26,3 +26,7 @@ Route::get('/{id}', 'ArtistsController@show'); // Shorter artist url
 
 // Artwork
 Route::resource('art', 'ArtworksController');
+
+// Follow
+Route::post('artist/follow', 'FollowsController@store')->name('follow.store');
+Route::get('artist/{id}/unfollow', 'FollowsController@destroy');

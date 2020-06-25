@@ -43,12 +43,12 @@ class ArtistsController extends Controller
         $user_id = Auth::user()->id;
 
         // Check if user have an artist profile
-        $artist_exist = Auth::user()->artist->exists();
+        $artist_exist = Auth::user()->artist;
         if(!$artist_exist) {
             return view('artists.create');
         }
         else {
-            return redirect('/dashboard');
+            return abort(404);
         }
     }
 
@@ -74,7 +74,7 @@ class ArtistsController extends Controller
             $user_id = Auth::user()->id;
 
             // Check if user already have an artist profile
-            $artist_exist = Auth::user()->artist->exists();
+            $artist_exist = Auth::user()->artist;
             if(!$artist_exist) {
                 // Create new artist
                 $artist = new Artist;
@@ -114,7 +114,7 @@ class ArtistsController extends Controller
 
                 $artist->save();
 
-                return redirect('/artist/'.$artist->url);
+                return redirect('/'.$artist->url);
             } else {
                 return redirect('/dashboard');
             }
@@ -133,10 +133,22 @@ class ArtistsController extends Controller
     {
         // $id uses artist url instead of artist id
         $artist = Artist::where('url', $id)->first();
-        $artworks = Artist::find($artist->id)->artworks;
+        $artworks = $artist->artworks;
+        $followers = $artist->followers;
+        $isFollowing = false;
+
+        // If logged in
+        if(Auth::check()) {
+            foreach($followers as $follower) {
+                if($follower->id == Auth::user()->id) {
+                    $isFollowing = true;
+                }
+            }
+        }
+        
 
         if($artist) {
-            return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks);
+            return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks)->with('followers', $followers)->with('isFollowing', $isFollowing);
         } 
         else {
             abort(404);

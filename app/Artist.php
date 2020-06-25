@@ -23,4 +23,10 @@ class Artist extends Model
     {
         return $this->hasMany('App\Artwork');
     }
+
+    // Artist can have many followers
+    public function followers()
+    {
+        return $this->belongsToMany('App\User', 'follows'); // model, table name
+    }
 }

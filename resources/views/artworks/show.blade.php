@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     <p>{{ $artwork->description }}</p>
-                    <img src="/img/artwork/{{ $artwork->filename }}">
+                    <img class="img-fluid" src="/img/artwork/{{ $artwork->filename }}">
 
                     <small>Uploaded on {{ $artwork->created_at->format('d M, Y') }}</small>
                 </div>

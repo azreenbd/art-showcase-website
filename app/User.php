@@ -44,4 +44,10 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Artist');
     }
+
+    // User can follow many artists
+    public function follows()
+    {
+        return $this->belongsToMany('App\Artist', 'follows'); // model, table name
+    }
 }
