@@ -16,7 +16,7 @@
 
                             @error('artwork')
                                 <span class="invalid-feedback d-block col-md-6 offset-md-4" role="alert">
-                                    <strong>File upload only accept image file.</strong>
+                                    <strong>Please upload a valid image file.</strong>
                                 </span>
                             @enderror
                         </div>

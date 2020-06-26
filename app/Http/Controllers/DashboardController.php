@@ -28,6 +28,7 @@ class DashboardController extends Controller
         $user_id = Auth::user()->id;
         $user = User::find($user_id);
         $follows = $user->follows;
+        $favourites = $user->favourites;
         $feeds = array();
 
         foreach($follows as $artist) {
@@ -42,6 +43,6 @@ class DashboardController extends Controller
         // change $feeds to collect($feeds) so you can use sortBy
         $feeds = collect($feeds)->sortByDesc('created_at');
 
-        return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds);
+        return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds)->with('favourites', $favourites);
     }
 }

@@ -13,6 +13,7 @@ class Artist extends Model
     /**
      * Model relationship
      */
+    // One artist belongs to a user
     public function user()
     {
         return $this->belongsTo('App\User');

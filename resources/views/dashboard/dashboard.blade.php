@@ -40,6 +40,18 @@
                             </div>
                         </a>
                     @empty
+                        <p>No new feeds.</p>
+                    @endforelse
+
+                    <h3>Favourites</h3>
+                    @forelse ($favourites->sortBy('created_at') as $favourite)
+                        <a href="{{ url('/art/'.$favourite->id) }}">
+                            <div class="img-thumbnail my-2">
+                                <h5>{{ $favourite->title }} by {{ $favourite->artist->name }}</h5>
+                                <img class="img-fluid" src="/img/artwork/{{ $favourite->filename }}">
+                            </div>
+                        </a>
+                    @empty
                         
                     @endforelse
                     

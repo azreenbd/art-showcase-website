@@ -61,7 +61,7 @@ class ArtworksController extends Controller
         // Data validation
         $validate = $request->validate([
             'artwork' => ['required', 'image'],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:120'],
             'description' => ['nullable', 'string', 'max:500'],
         ]);
         
@@ -132,8 +132,19 @@ class ArtworksController extends Controller
     public function show($id)
     {
         $artwork = Artwork::find($id);
+        $favourites = $artwork->favourites; // User that favourite this artwork
+        $isFavourite = false; // To check whether current logged in user favourite this artwork
 
-        return view('artworks.show')->with('artwork', $artwork);
+        // If logged in
+        if(Auth::check()) {
+            foreach($favourites as $favourite) {
+                if($favourite->id == Auth::user()->id) {
+                    $isFavourite = true;
+                }
+            }
+        }
+
+        return view('artworks.show')->with('artwork', $artwork)->with('isFavourite', $isFavourite);
     }
 
     /**

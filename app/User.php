@@ -40,6 +40,7 @@ class User extends Authenticatable
     /**
      * Model relationship
      */
+    // One user can have one artist profile
     public function artist()
     {
         return $this->hasOne('App\Artist');
@@ -49,5 +50,17 @@ class User extends Authenticatable
     public function follows()
     {
         return $this->belongsToMany('App\Artist', 'follows'); // model, table name
+    }
+
+    // User can favourite many artwork
+    public function favourites()
+    {
+        return $this->belongsToMany('App\Artwork', 'favourites')->withTimestamps(); // model, table name
+    }
+
+    // One user can have many comments
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

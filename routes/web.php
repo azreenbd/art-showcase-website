@@ -30,3 +30,7 @@ Route::resource('art', 'ArtworksController');
 // Follow
 Route::post('artist/follow', 'FollowsController@store')->name('follow.store');
 Route::get('artist/{id}/unfollow', 'FollowsController@destroy');
+
+// Favourite
+Route::post('art/favourite', 'FavouritesController@store')->name('favourite.store');
+Route::get('art/{id}/unfavourite', 'FavouritesController@destroy');
