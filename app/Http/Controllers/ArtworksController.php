@@ -134,6 +134,7 @@ class ArtworksController extends Controller
         $artwork = Artwork::find($id);
         $favourites = $artwork->favourites; // User that favourite this artwork
         $isFavourite = false; // To check whether current logged in user favourite this artwork
+        $comments = $artwork->comments; // All the comment associated with this artwork
 
         // If logged in
         if(Auth::check()) {
@@ -144,7 +145,7 @@ class ArtworksController extends Controller
             }
         }
 
-        return view('artworks.show')->with('artwork', $artwork)->with('isFavourite', $isFavourite);
+        return view('artworks.show')->with('artwork', $artwork)->with('isFavourite', $isFavourite)->with('comments', $comments);
     }
 
     /**

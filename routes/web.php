@@ -34,3 +34,7 @@ Route::get('artist/{id}/unfollow', 'FollowsController@destroy');
 // Favourite
 Route::post('art/favourite', 'FavouritesController@store')->name('favourite.store');
 Route::get('art/{id}/unfavourite', 'FavouritesController@destroy');
+
+// Comments
+Route::post('art/{artwork_id}/comment', 'CommentsController@store')->name('comment.store');
+Route::get('art/{artwork_id}/comment/delete/{id}', 'CommentsController@destroy');

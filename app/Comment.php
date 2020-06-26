@@ -15,4 +15,10 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Artwork');
     }
+
+    // A comment belongs to a user
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
