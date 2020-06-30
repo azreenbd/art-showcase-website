@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Image;
 use Auth;
+use Storage;
 use App\Artist;
 use App\User;
 use App\Artwork;
@@ -88,19 +89,24 @@ class ArtistsController extends Controller
                     $width = Image::make($avatar)->width();
 
                     // Convert and upload the image
+                    $img;
+
                     if($height > $width) {
                         // Resize width
-                        Image::make($avatar)->resize(460, null, function ($constraint) {
+                        $img = Image::make($avatar)->resize(460, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/avatar/' . $filename) );
+                        })->encode('jpg', 50);
                     } else {
                         // Resize height
-                        Image::make($avatar)->resize(null, 460, function ($constraint) {
+                        $img = Image::make($avatar)->resize(null, 460, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/avatar/' . $filename) );
+                        })->encode('jpg', 50);
                     }
+
+                    // Save image to storage facade
+                    Storage::put('public/img/avatar/'.$filename, $img->stream());
 
                     $artist->avatar = $filename;
                 }
@@ -133,23 +139,24 @@ class ArtistsController extends Controller
     {
         // $id uses artist url instead of artist id
         $artist = Artist::where('url', $id)->first();
-        $artworks = $artist->artworks;
-        $followers = $artist->followers;
-        $isFollowing = false;
-
-        // If logged in
-        if(Auth::check()) {
-            foreach($followers as $follower) {
-                if($follower->id == Auth::user()->id) {
-                    $isFollowing = true;
-                }
-            }
-        }
-        
 
         if($artist) {
+            $artworks = $artist->artworks;
+            $followers = $artist->followers;
+            $isFollowing = false;
+
+            // If logged in
+            if(Auth::check()) {
+                foreach($followers as $follower) {
+                    if($follower->id == Auth::user()->id) {
+                        $isFollowing = true;
+                    }
+                }
+            }
+
             return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks)->with('followers', $followers)->with('isFollowing', $isFollowing);
-        } 
+
+        }
         else {
             abort(404);
         }
@@ -163,7 +170,14 @@ class ArtistsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $artist = Artist::where('url', $id)->first();
+
+        if($artist && Auth::user()->artist->id == $artist->id) {
+            return view('artists.edit')->with('artist', $artist);
+        }
+        else {
+            abort(404);
+        }
     }
 
     /**

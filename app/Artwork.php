@@ -8,6 +8,8 @@ class Artwork extends Model
 {
     public $primaryKey = 'id';
 
+    protected $fillable = ['title', 'description', 'filename', 'artist_id'];
+
     /**
      * Model relationship
      */

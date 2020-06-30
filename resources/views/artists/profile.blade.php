@@ -5,10 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ $artist->name }} <small>({{ $artist->fullname }})</small></div>
+                <div class="card-header">
+                    {{ $artist->name }} <small>({{ $artist->fullname }})</small>
+                    @auth
+                        <!-- If user owned this profile -->
+                        @if(Auth::user()->id == $artist->user_id)
+                            <a class="btn btn-secondary" href="{{ route('artist.edit', $artist->url) }}" role="button">Edit Profile</a>
+                        @endif
+                    @endauth
+                </div>
                 
                 <div class="card-body">
-                    <img class="img-fluid" src="/img/avatar/{{ $artist->avatar }}">
+                    <img class="img-fluid mt-5" src="/storage/img/avatar/{{ $artist->avatar }}">
                     <br>
                     @auth
                         @if(!$isFollowing)
@@ -23,9 +31,36 @@
                             </form>
                         @else
                             <!-- Unfollow an artist -->
-                            <a class="btn btn-danger text-light" href="{{ url('/artist/'.$artist->url.'/unfollow') }}">
-                                Unfollow
-                            </a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unfollowModal">
+                                Following
+                            </button>
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="unfollowModal" tabindex="-1" role="dialog" aria-labelledby="unfollowModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="unfollowModalLabel">Unfollow {{ $artist->name }}?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Unfollow {{ $artist->name }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <form id="unfollow-form" action="{{ route('follow.destroy', $artist->url)}}" method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <input class="btn btn-danger" type="submit" value="Unfollow">
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
                         @endif
                     @endauth
                     <p>{{ $artist->about }}</p>
@@ -48,7 +83,7 @@
                     @endauth
 
                     @forelse ($artworks as $artwork)
-                        <a href="{{ url('/art/'.$artwork->id) }}"><img class="img-fluid" src="/img/artwork/{{ $artwork->filename }}"></a>
+                        <a href="{{ url('/art/'.$artwork->id) }}"><img class="img-fluid" src="/storage/img/artwork/{{ $artwork->filename }}"></a>
                     @empty
                         <p>No artwork available.</p>
                     @endforelse

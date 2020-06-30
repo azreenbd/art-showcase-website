@@ -42,7 +42,7 @@ class CommentsController extends Controller
 
             $comment->save();
 
-            return redirect()->back();
+            return redirect()->to(url()->previous() . '#comment');
         }
         else {
             return redirect()->back();
@@ -63,10 +63,10 @@ class CommentsController extends Controller
         if($comment->artwork_id == $artwork_id && $comment->user_id == $user->id) {
             $comment->delete();
 
-            return redirect()->back();
+            return redirect()->to(url()->previous() . '#comment');
         } 
         else {
-            return redirect()->back();
+            return redirect()->to(url()->previous() . '#comment');
         }
     }
 }

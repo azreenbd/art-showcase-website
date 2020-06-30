@@ -36,7 +36,7 @@
                             <div class="img-thumbnail my-2">
                                 <h5>{{ $feed->title }} by {{ $feed->artist->name }}</h5>
                                 <small>Uploaded on {{ $feed->created_at->format('d M, Y') }}</small>
-                                <img class="img-fluid" src="/img/artwork/{{ $feed->filename }}">
+                                <img class="img-fluid" src="/storage/img/artwork/{{ $feed->filename }}">
                             </div>
                         </a>
                     @empty
@@ -48,7 +48,7 @@
                         <a href="{{ url('/art/'.$favourite->id) }}">
                             <div class="img-thumbnail my-2">
                                 <h5>{{ $favourite->title }} by {{ $favourite->artist->name }}</h5>
-                                <img class="img-fluid" src="/img/artwork/{{ $favourite->filename }}">
+                                <img class="img-fluid" src="/storage/img/artwork/{{ $favourite->filename }}">
                             </div>
                         </a>
                     @empty

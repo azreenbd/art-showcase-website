@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Image;
+use Storage;
 use App\Artist;
 use App\Artwork;
 use App\User;
@@ -85,25 +86,30 @@ class ArtworksController extends Controller
                 // Manipulate artwork image
                 if($request->hasFile('artwork')) {
                     $avatar = $request->file('artwork');
-                    $filename = $artist->id . '_' . time() . '.jpg';
+                    $filename = $artist->url . '_' . time() . '.jpg';
 
                     $height = Image::make($avatar)->height();
                     $width = Image::make($avatar)->width();
 
                     // Convert and upload the image
+                    $img;
+
                     if($height > $width) {
                         // Resize width
-                        Image::make($avatar)->resize(1000, null, function ($constraint) {
+                        $img  = Image::make($avatar)->resize(1000, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/artwork/' . $filename) );
+                        })->encode('jpg', 50);
                     } else {
                         // Resize height
-                        Image::make($avatar)->resize(null, 1000, function ($constraint) {
+                        $img = Image::make($avatar)->resize(null, 1000, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50)->save( public_path('/img/artwork/' . $filename) );
+                        })->encode('jpg', 50);
                     }
+
+                    // Save image to storage facade
+                    Storage::put('public/img/artwork/'.$filename, $img->stream());
 
                     $artwork->filename = $filename;
                 }

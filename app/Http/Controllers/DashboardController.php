@@ -37,8 +37,6 @@ class DashboardController extends Controller
             }
         }
 
-        //dd($feeds);
-
         // Sort by newest artwork
         // change $feeds to collect($feeds) so you can use sortBy
         $feeds = collect($feeds)->sortByDesc('created_at');
