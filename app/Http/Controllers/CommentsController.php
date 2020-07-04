@@ -42,7 +42,7 @@ class CommentsController extends Controller
 
             $comment->save();
 
-            return redirect()->to(url()->previous() . '#comment');
+            return redirect()->to(url()->previous() . '#' . $comment->id);
         }
         else {
             return redirect()->back();

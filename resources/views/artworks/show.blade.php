@@ -25,52 +25,40 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex d-flex justify-content-between">
+                    <div class="d-flex d-flex">
                         <div>
                             <span>
-                                <b>{{ count($artwork->favourites) }}
-                                    @if(count($artwork->favourites) > 1)
-                                        likes
-                                    @else
-                                        like
-                                    @endif
-                                </b>   
-                                <b>
-                                    {{ count($comments) }}
-                                    @if(count($comments) > 1)
-                                        comments
-                                    @else
-                                        comment
-                                    @endif
-                                </b>
-                            </span>
-                        </div>
+                                @auth
+                                    @if(!$isFavourite)
+                                        <a title="Favourite" class="btn btn-link text-dark font-weight-bold py-0 px-1" onclick="event.preventDefault(); document.getElementById('favourite-form').submit();">
+                                            <i class="far fa-heart"></i> {{ count($artwork->favourites) }}
+                                        </a>
 
-                        <div>
-                            @auth
-                                @if(!$isFavourite)
-                                    <!-- Favourite an artwork -->
-                                    <a class="btn btn-dark text-light" onclick="event.preventDefault(); document.getElementById('favourite-form').submit();">
-                                        Favourite
-                                    </a>
+                                        <form id="favourite-form" action="{{ route('favourite.store') }}" method="POST" style="display: none;">
+                                            @csrf
+                                            <input type="hidden" id="artwork_id" name="artwork_id" value="{{ $artwork->id }}">
+                                        </form>
+                                    @else
+                                        <a title="Favourite" class="btn btn-link font-weight-bold py-0 px-1" onclick="event.preventDefault(); document.getElementById('unfavourite-form').submit();">
+                                            <i class="fas fa-heart text-danger"></i> {{ count($artwork->favourites) }}
+                                        </a>
 
-                                    <form id="favourite-form" action="{{ route('favourite.store') }}" method="POST" style="display: none;">
-                                        @csrf
-                                        <input type="hidden" id="artwork_id" name="artwork_id" value="{{ $artwork->id }}">
-                                    </form>
+                                        <form id="unfavourite-form" action="{{ route('favourite.destroy', $artwork->id)}}" method="POST" style="display: none;">
+                                            @method('DELETE')
+                                            @csrf
+                                        </form>
+                                    @endif
                                 @else
-                                    <!-- Unfavourite an artwork -->
-                                    <form id="unfavourite-form" action="{{ route('favourite.destroy', $artwork->id)}}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <input class="btn btn-danger" type="submit" value="Unfavourite">
-                                    </form>
-                                @endif
-                            @endauth
-
-                            <a class="btn btn-dark text-light" href="#comment">
-                                Comment
-                            </a>
+                                    <a title="Favourite" class="btn btn-link text-dark font-weight-bold py-0 px-1">
+                                        <i class="far fa-heart"></i> {{ count($artwork->favourites) }}
+                                    </a>
+                                @endauth   
+                                
+                                <a title="Comment" class="btn btn-link text-dark font-weight-bold text-decoration-none py-0 px-1" href="#comment">
+                                    <i class="far fa-comment"></i> {{ count($comments) }}
+                                </a>
+                            </span>
+                            
                         </div>
                     </div>
                     
@@ -104,8 +92,8 @@
                                     @enderror
                                 </div>
                                 <div class="p-1">
-                                    <button type="submit" class="btn btn-primary">
-                                        Cmt
+                                    <button type="submit" class="btn btn-primary" title="Add comment">
+                                        <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </div>
                             </div>
@@ -117,7 +105,7 @@
                         @forelse ($comments->sortBy('created_at') as $comment)
                             <!-- if user have an artist profile -->
                             @if($comment->user->artist)
-                                <li class="media mb-3">
+                                <li id="{{ $comment->id }}" class="media mb-3">
                                     <a href="{{ url('/'.$comment->user->artist->url) }}">
                                         <img src="{{ url('/storage/img/avatar/'.$comment->user->artist->avatar) }}" title="{{ $comment->user->artist->name }}" class="rounded-circle mr-3" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                                     </a>
@@ -144,8 +132,8 @@
 
                                             <!-- Delete comment -->
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#deleteCommentModal">
-                                                D
+                                            <button type="button" class="btn btn-link text-muted text-decoration-none ml-3" title="Delete" data-toggle="modal" data-target="#deleteCommentModal">
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                             
                                             <!-- Modal -->

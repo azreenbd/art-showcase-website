@@ -14,6 +14,12 @@
                         </div>
                     @endif
 
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     @if($artist)
                         <a class="btn btn-light" href="{{ url('/'.$artist->url) }}" role="button">Artist Profile</a>
                     @else

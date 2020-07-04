@@ -27,6 +27,7 @@ class CreateArtistsTable extends Migration
             $table->string('instagram')->nullable();
             $table->string('deviantart')->nullable();
             $table->string('artstation')->nullable();
+            $table->string('behance')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

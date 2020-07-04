@@ -13,9 +13,15 @@
         
                         @csrf
         
-                        @if (session('success'))
+                        @if (session('status'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
                             </div>
                         @endif
                         
@@ -75,7 +81,7 @@
                         <div class="form-group">
                             <label for="about" class="form-label h5">{{ __('About') }}</label>
 
-                            <textarea id="about" class="form-control @error('about') is-invalid @enderror" name="about" value="{{ old('about', $artist->about) }}"></textarea>
+                            <textarea id="about" class="form-control @error('about') is-invalid @enderror" name="about">{{ old('about', $artist->about) }}</textarea>
 
                             @error('about')
                                 <span class="invalid-feedback" role="alert">
@@ -91,7 +97,7 @@
                         <h2>Pautan Sosial</h2>
 
                         <div class="form-group">
-                            <label for="website" class="form-label h5">Website</label>
+                            <label for="website" class="form-label h5"><i class="fas fa-globe"></i> Website</label>
                             <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" placeholder="https://www.yourwebsite.com/" value="{{ $artist->website }}">
                         
                             @error('website')
@@ -150,6 +156,17 @@
                             <input id="artstation" type="url" class="form-control @error('artstation') is-invalid @enderror" name="artstation" placeholder="https://www.artstation.com/" value="{{ $artist->artstation }}">
                         
                             @error('artstation')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="behance" class="form-label h5"><i class="fab fa-behance"></i> Behance</label>
+                            <input id="behance" type="url" class="form-control @error('behance') is-invalid @enderror" name="behance" placeholder="https://www.behance.net/" value="{{ $artist->behance }}">
+                        
+                            @error('behance')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

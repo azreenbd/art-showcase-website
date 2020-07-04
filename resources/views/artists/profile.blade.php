@@ -2,11 +2,16 @@
 
 @section('content')
 <div class="container">
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    {{ $artist->name }} <small>({{ $artist->fullname }})</small>
+                    {{ $artist->name }} <small>{{ $artist->fullname }}</small>
                     @auth
                         <!-- If user owned this profile -->
                         @if(Auth::user()->id == $artist->user_id)
@@ -17,7 +22,31 @@
                 
                 <div class="card-body">
                     <img class="img-fluid mt-5" src="/storage/img/avatar/{{ $artist->avatar }}">
-                    <br>
+
+                    <h4>
+                        @if($artist->website)
+                            <a href="{{ $artist->website }}" title="{{ $artist->website }}" target="_blank"><i class="fas fa-globe"></i></a>
+                        @endif
+                        @if($artist->facebook)
+                            <a href="{{ $artist->facebook }}" title="Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+                        @endif
+                        @if($artist->twitter)
+                            <a href="{{ $artist->twitter }}" title="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+                        @endif
+                        @if($artist->instagram)
+                            <a href="{{ $artist->instagram }}" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                        @endif
+                        @if($artist->deviantart)
+                            <a href="{{ $artist->deviantart }}" title="DeviantArt" target="_blank"><i class="fab fa-deviantart"></i></a>
+                        @endif
+                        @if($artist->artstation)
+                            <a href="{{ $artist->artstation }}" title="ArtStation" target="_blank"><i class="fab fa-artstation"></i></a>
+                        @endif
+                        @if($artist->behance)
+                            <a href="{{ $artist->behance }}" title="Behance" target="_blank"><i class="fab fa-behance"></i></a>
+                        @endif
+                    </h4>
+
                     @auth
                         @if(!$isFollowing)
                             <!-- Follow an artist -->

@@ -12,7 +12,7 @@
                         @csrf
                         
                         <div class="form-group row">
-                            <img src="/img/avatar/_default.jpg">
+                            <img src="/storage/img/avatar/_default.jpg">
                             <input id="avatar" type="file" accept=".jpg, .jpeg, .png" class=" form-control-file border rounded p-2" name="avatar">
 
                             @error('avatar')
