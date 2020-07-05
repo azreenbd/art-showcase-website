@@ -2,22 +2,20 @@
 
 @section('content')
 <div class="container ">
-    <ul class="list-unstyled">
-        <li class="media mb-3">
-            <a href="{{ url('/'.$artwork->artist->url) }}">
-                <img src="{{ url('/storage/img/avatar/'.$artwork->artist->avatar) }}" title="{{ $artwork->artist->name }}" class="rounded-circle mr-3" style="object-fit: cover; width: 3rem; height:3rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
-            </a>
-            <div class="media-body text-truncate">
-                <div>
-                    <div class="lead">{{ $artwork->title }}</div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span>by <a href="{{ url('/'.$artwork->artist->url) }}"><b>{{ $artwork->artist->name }}</b></a></span>
-                    <small class="text-muted">{{ $artwork->created_at->format('d M, Y') }}</small>
-                </div>
+    <div class="media mb-3">
+        <a href="{{ url('/'.$artwork->artist->url) }}">
+            <img src="{{ url('/storage/img/avatar/'.$artwork->artist->avatar) }}" title="{{ $artwork->artist->name }}" class="rounded-circle mr-3 border" style="object-fit: cover; width: 3rem; height:3rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+        </a>
+        <div class="media-body text-truncate">
+            <div>
+                <div class="lead">{{ $artwork->title }}</div>
             </div>
-        </li>
-    </ul>
+            <div class="d-flex justify-content-between">
+                <span>by <a href="{{ url('/'.$artwork->artist->url) }}"><b>{{ $artwork->artist->name }}</b></a></span>
+                <small class="text-muted">{{ $artwork->created_at->format('d M, Y') }}</small>
+            </div>
+        </div>
+    </div>
 
     <img class="img-fluid mx-auto d-block" src="/storage/img/artwork/{{ $artwork->filename }}" style="max-height: 100vh">
 
@@ -25,7 +23,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex d-flex">
+                    <div class="d-flex justify-content-between">
                         <div>
                             <span>
                                 @auth
@@ -60,6 +58,14 @@
                             </span>
                             
                         </div>
+                        <div>
+                            @auth
+                                @if (Auth::user()->artist && Auth::user()->artist->id == $artwork->artist->id)
+                                    <a href="{{ url('/art/'.$artwork->id.'/edit') }}">Edit</a>
+                                    
+                                @endif
+                            @endauth
+                        </div>
                     </div>
                     
                     
@@ -76,9 +82,9 @@
                                 <div class="p-1">
                                     <!-- if user have an artist profile -->
                                     @if(Auth::user()->artist)
-                                        <img src="{{ url('/storage/img/avatar/'.Auth::user()->artist->avatar) }}" class="rounded-circle" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                                        <img src="{{ url('/storage/img/avatar/'.Auth::user()->artist->avatar) }}" class="rounded-circle border" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                                     @else
-                                        <img src="{{ url('/storage/img/avatar/_default.jpg') }}" class="rounded-circle" style="object-fit: cover; width: 2.5rem; height: 2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                                        <img src="{{ url('/storage/img/avatar/_default.jpg') }}" class="rounded-circle border" style="object-fit: cover; width: 2.5rem; height: 2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                                     @endif
                                 </div>
                                 <div class="flex-fill p-1">
@@ -107,7 +113,7 @@
                             @if($comment->user->artist)
                                 <li id="{{ $comment->id }}" class="media mb-3">
                                     <a href="{{ url('/'.$comment->user->artist->url) }}">
-                                        <img src="{{ url('/storage/img/avatar/'.$comment->user->artist->avatar) }}" title="{{ $comment->user->artist->name }}" class="rounded-circle mr-3" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                                        <img src="{{ url('/storage/img/avatar/'.$comment->user->artist->avatar) }}" title="{{ $comment->user->artist->name }}" class="rounded-circle mr-3 border" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                                     </a>
                                     <div class="media-body d-flex flex-column">
                                         <a href="{{ url('/'.$comment->user->artist->url) }}"><b>{{ $comment->user->artist->name }}</b></a>
@@ -116,7 +122,7 @@
                                     </div>
                             @else
                                 <li class="media mb-3">
-                                    <img src="{{ url('/storage/img/avatar/_default.jpg') }}" title="{{ $comment->user->username }}" class="rounded-circle mr-3" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                                    <img src="{{ url('/storage/img/avatar/_default.jpg') }}" title="{{ $comment->user->username }}" class="rounded-circle mr-3 border" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
 
                                     <div class="media-body d-flex flex-column">
                                         <b>{{ $comment->user->username }}</b>

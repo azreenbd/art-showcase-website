@@ -89,21 +89,33 @@ class ArtistsController extends Controller
                     $height = Image::make($avatar)->height();
                     $width = Image::make($avatar)->width();
 
-                    // Convert and upload the image
+                    // Manipulate image
                     $img;
-
                     if($height > $width) {
                         // Resize width
-                        $img = Image::make($avatar)->resize(460, null, function ($constraint) {
+                        $img = Image::make($avatar)->resize(400, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50);
+                        });
                     } else {
                         // Resize height
-                        $img = Image::make($avatar)->resize(null, 460, function ($constraint) {
+                        $img = Image::make($avatar)->resize(null, 400, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode('jpg', 50);
+                        });
+                    }
+                    // Convert to jpg and crop to 400x400
+                    $img->encode('jpg', 20);
+                    if($height < 400 || $width < 400) {
+                        if($height > $width) {
+                            $img->crop($width, $width);
+                        }
+                        else {
+                            $img->crop($height, $height);
+                        }
+                    }
+                    else {
+                        $img->crop(400, 400);
                     }
 
                     // Save image to storage facade
@@ -155,7 +167,13 @@ class ArtistsController extends Controller
                 }
             }
 
-            return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks)->with('followers', $followers)->with('isFollowing', $isFollowing);
+            $total_favourites = 0;
+
+            foreach ($artworks as $artwork) {
+                $total_favourites += count($artwork->favourites);
+            }
+
+            return view('artists.profile')->with('artist', $artist)->with('artworks', $artworks)->with('isFollowing', $isFollowing)->with('total_favourites', $total_favourites);
 
         }
         else {
@@ -173,7 +191,7 @@ class ArtistsController extends Controller
     {
         $artist = Artist::where('url', $id)->first();
 
-        if($artist && Auth::user()->artist->id == $artist->id) {
+        if($artist && Auth::user()->artist && Auth::user()->artist->id == $artist->id) {
             return view('artists.edit')->with('artist', $artist);
         }
         else {

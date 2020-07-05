@@ -9,9 +9,10 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('artist.update', $artist->url) }}" enctype="multipart/form-data">
-                        <h1>Tetapan Umum</h1>
+                        <h1>General</h1>
         
                         @csrf
+                        @method('PUT')
         
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -94,7 +95,7 @@
                             <div class="text-danger">* Required</div>
                         </div>
         
-                        <h2>Pautan Sosial</h2>
+                        <h2>Social Links</h2>
 
                         <div class="form-group">
                             <label for="website" class="form-label h5"><i class="fas fa-globe"></i> Website</label>
@@ -186,7 +187,7 @@
                     
                     <!-- Modal -->
                     <div class="modal fade" id="deleteProfileModal" tabindex="-1" role="dialog" aria-labelledby="deleteProfileModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                             <h5 class="modal-title" id="deleteProfileModalLabel">Delete {{ $artist->name }}?</h5>

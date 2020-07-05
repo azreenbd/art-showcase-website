@@ -17,12 +17,4 @@ $fa-font-path: "../webfonts";
 @import '~@fortawesome/fontawesome-free/scss/brands.scss';
 
 // Custom CSS
-html {
-	scroll-behavior: smooth;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-}
+@import 'custom';

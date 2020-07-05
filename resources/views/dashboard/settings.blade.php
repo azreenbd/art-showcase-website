@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.update') }}">
                         @csrf
+                        @method('PUT')
 
                         @if (session('success'))
                             <div class="alert alert-success" role="alert">

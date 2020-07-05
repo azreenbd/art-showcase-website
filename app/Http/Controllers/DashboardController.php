@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
         // Sort by newest artwork
         // change $feeds to collect($feeds) so you can use sortBy
-        $feeds = collect($feeds)->sortByDesc('created_at');
+        $feeds = collect($feeds)->sortByDesc('created_at')->take(30);
 
         return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds)->with('favourites', $favourites);
     }

@@ -22,7 +22,7 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 // User Settings
 Route::get('dashboard/settings', 'UsersController@edit')->name('user.edit');
-Route::post('dashboard/settings', 'UsersController@update')->name('user.update');
+Route::put('dashboard/settings', 'UsersController@update')->name('user.update');
 
 /** Artist
 * Route::resource('artist', 'ArtistsController');
@@ -35,7 +35,7 @@ Route::post('/artist', 'ArtistsController@store')->name('artist.store');
 Route::get('/artist/create', 'ArtistsController@create')->name('artist.create');
 
 Route::get('/{id}/edit', 'ArtistsController@edit')->name('artist.edit');
-Route::post('/{id}/edit', 'ArtistsController@update')->name('artist.update');
+Route::put('/{id}/edit', 'ArtistsController@update')->name('artist.update');
 
 Route::delete('/{id}/delete', 'ArtistsController@destroy')->name('artist.destroy');
 

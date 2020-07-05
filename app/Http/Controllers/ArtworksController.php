@@ -138,20 +138,27 @@ class ArtworksController extends Controller
     public function show($id)
     {
         $artwork = Artwork::find($id);
-        $favourites = $artwork->favourites; // User that favourite this artwork
-        $isFavourite = false; // To check whether current logged in user favourite this artwork
-        $comments = $artwork->comments; // All the comment associated with this artwork
 
-        // If logged in
-        if(Auth::check()) {
-            foreach($favourites as $favourite) {
-                if($favourite->id == Auth::user()->id) {
-                    $isFavourite = true;
+        if($artwork) {
+            $favourites = $artwork->favourites; // User that favourite this artwork
+            $isFavourite = false; // To check whether current logged in user favourite this artwork
+            $comments = $artwork->comments; // All the comment associated with this artwork
+
+            // If logged in
+            if(Auth::check()) {
+                foreach($favourites as $favourite) {
+                    if($favourite->id == Auth::user()->id) {
+                        $isFavourite = true;
+                    }
                 }
             }
-        }
 
-        return view('artworks.show')->with('artwork', $artwork)->with('isFavourite', $isFavourite)->with('comments', $comments);
+            return view('artworks.show')->with('artwork', $artwork)->with('isFavourite', $isFavourite)->with('comments', $comments);
+        }
+        else {
+            return abort(404);
+        }
+        
     }
 
     /**
@@ -162,7 +169,16 @@ class ArtworksController extends Controller
      */
     public function edit($id)
     {
-        //
+        $artwork = Artwork::find($id);
+        $user = Auth::user();
+        $owner = $artwork->artist->user;
+
+        if($artwork && $owner && $owner->id == $user->id) {
+            return view('artworks.edit')->with('artwork', $artwork);
+        }
+        else {
+            return abort(404);
+        }
     }
 
     /**
@@ -174,7 +190,17 @@ class ArtworksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $artwork = Artwork::find($id);
+        $user = Auth::user();
+
+        if($artwork && $artwork->artist->user && $artwork->artist->user->id == $user->id) {
+            return 'hello';
+        } 
+        else {
+            session()->flash('error', 'Something when wrong, please try again!');
+
+            return redirect()->back();
+        }
     }
 
     /**
@@ -185,6 +211,25 @@ class ArtworksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $artwork = Artwork::find($id);
+        $artist = Auth::user()->artist;
+
+        // Check if the user owned this artwork
+        if($artist && $artwork->artist->id == $artist->id) {
+            // Delete file
+            Storage::delete('public/img/artwork/'.$artwork->filename);
+
+            // Remove from db
+            $artwork->delete();
+
+            session()->flash('status', 'Artwork deleted successfully!');
+
+            return redirect('/'.$artist->url);
+        }
+        else {
+            session()->flash('error', 'Something when wrong, please try again!');
+
+            return redirect()->back();
+        }
     }
 }
