@@ -69,7 +69,7 @@
                     <!-- artwork -->
                     <a href="{{ url('/art/'.$feed->id) }}">
                         <div class="row rounded justify-content-center bg-whitesmoke border border-whitesmoke overflow-hidden">
-                            <img class="mx-auto d-block" style="max-height:80vh; max-width: 100%;" src="/storage/img/artwork/{{ $feed->filename }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                            <img class="mx-auto d-block" style="object-fit:cover; max-height:80vh; width: 100%;" src="/storage/img/artwork/{{ $feed->filename }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                         </div>
                     </a>
 
@@ -118,6 +118,8 @@
             @empty
                 <p>No new feeds.</p>
             @endforelse
+
+            {{ $feeds->links() }}
             
         </div>
     </div>

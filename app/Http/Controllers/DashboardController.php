@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use Auth;
 use App\User;
+use App\Artwork;
 
 class DashboardController extends Controller
 {
@@ -29,18 +31,9 @@ class DashboardController extends Controller
         $user = User::find($user_id);
         $follows = $user->follows;
         $favourites = $user->favourites;
-        $feeds = array();
 
-        foreach($follows as $artist) {
-            foreach($artist->artworks as $artwork) {
-                array_push($feeds, $artwork);
-            }
-        }
-
-        // Sort by newest artwork
-        // change $feeds to collect($feeds) so you can use sortBy
-        $feeds = collect($feeds)->sortByDesc('created_at')->take(30);
-
+        $feeds = Artwork::whereIn('artist_id', $follows)->orderBy('created_at','DESC')->paginate(20);
+   
         return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds)->with('favourites', $favourites);
     }
 }
