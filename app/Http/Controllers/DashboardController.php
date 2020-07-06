@@ -32,7 +32,13 @@ class DashboardController extends Controller
         $follows = $user->follows;
         $favourites = $user->favourites;
 
-        $feeds = Artwork::whereIn('artist_id', $follows)->orderBy('created_at','DESC')->paginate(20);
+        // Collect all artist id that the user follows
+        $artists_id = array();
+        foreach ($follows as $follow) {
+            array_push($artists_id, $follow->id);
+        }
+
+        $feeds = Artwork::whereIn('artist_id', $artists_id)->orderBy('created_at','DESC')->paginate(20);
    
         return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds)->with('favourites', $favourites);
     }

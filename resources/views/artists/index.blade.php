@@ -22,5 +22,7 @@
             <p>No artist available.</p>
         @endif
     </div>
+
+    {{ $artists->links() }}
 </div>
 @endsection

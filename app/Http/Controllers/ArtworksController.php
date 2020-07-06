@@ -194,7 +194,26 @@ class ArtworksController extends Controller
         $user = Auth::user();
 
         if($artwork && $artwork->artist->user && $artwork->artist->user->id == $user->id) {
-            return 'hello';
+            $validate = $request->validate([
+                'title' => ['required', 'string', 'max:120'],
+                'description' => ['nullable', 'string', 'max:500'],
+            ]);
+
+            if ($validate) {
+                $artwork->title = $request['title'];
+                $artwork->description = $request['description'];
+
+                $artwork->save();
+
+                $request->session()->flash('status', 'Updated!');
+
+                return redirect('/art/'.$artwork->id);
+            }
+            else {
+                $request->session()->flash('error', 'Something when wrong, please try again!');
+
+                return redirect()->back();
+            }
         } 
         else {
             session()->flash('error', 'Something when wrong, please try again!');

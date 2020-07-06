@@ -75,6 +75,15 @@
 
                     <!-- interactables icons -->
                     <div class="row py-2">
+                        <iframe style="display:none;" name="favourite-iframe" id="favourite-iframe"></iframe>
+                        <form id="favourite-form-{{ $feed->id }}" action="{{ route('favourite.store') }}" method="POST" style="display: none;" target="favourite-iframe" >
+                            @csrf
+                            <input type="hidden" id="artwork_id" name="artwork_id" value="{{ $feed->id }}">
+                        </form>
+                        <form id="unfavourite-form-{{ $feed->id }}" action="{{ route('favourite.destroy', $feed->id)}}" method="POST" style="display: none;" target="favourite-iframe">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                         <div class="d-flex justify-content-between">
                             <div>
                                 <span>
@@ -86,21 +95,22 @@
                                         @endif
                                     @endforeach
 
+                                    <span id="favourite-icon-{{ $feed->id }}">
                                     @if($isFavourited)
-                                        <a title="Favourite" href="{{ url('/art/'.$feed->id) }}" class="btn btn-link text-dark font-weight-bold text-decoration-none py-0 px-1">
+                                        <a title="Favourite" class="btn btn-link text-dark text-decoration-none py-0 px-1"  style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('unfavourite-form-{{ $feed->id }}').submit(); favouriteUpdate(false, {{ $feed->id }}, {{ count($feed->favourites) }});">
                                             <i class="fas fa-heart text-danger"></i> {{ count($feed->favourites) }}
                                         </a>
                                     @else
-                                        <a title="Favourite" href="{{ url('/art/'.$feed->id) }}" class="btn btn-link text-dark font-weight-bold text-decoration-none py-0 px-1">
+                                        <a title="Favourite" class="btn btn-link text-dark text-decoration-none py-0 px-1" style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('favourite-form-{{ $feed->id }}').submit(); favouriteUpdate(true, {{ $feed->id }}, {{ count($feed->favourites) }});">
                                             <i class="far fa-heart"></i> {{ count($feed->favourites) }}
                                         </a>
-                                    @endif  
+                                    @endif
+                                    </span>  
                                     
-                                    <a title="Comment" class="btn btn-link text-dark font-weight-bold text-decoration-none py-0 px-1" href="{{ url('/art/'.$feed->id.'#comment') }}">
+                                    <a title="Comment" class="btn btn-link text-dark text-decoration-none py-0 px-1" href="{{ url('/art/'.$feed->id.'#comment') }}" style="font-size: 1.125rem">
                                         <i class="far fa-comment"></i> {{ count($feed->comments) }}
                                     </a>
                                 </span>
-                                
                             </div>
                         </div>
                     </div>

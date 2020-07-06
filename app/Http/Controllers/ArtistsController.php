@@ -30,7 +30,7 @@ class ArtistsController extends Controller
      */
     public function index()
     {
-        $artists = Artist::all();
+        $artists = Artist::paginate(50);
 
         return view('artists.index')->with('artists', $artists);
     }
