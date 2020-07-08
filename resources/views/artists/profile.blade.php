@@ -9,8 +9,8 @@
             <img src="{{ url('/storage/img/avatar/'.$artist->avatar) }}" class="rounded-circle border" style="object-fit: cover; width: 95%; max-width: 50vw;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
             
             <div class="my-4">
-                <span class="mx-2"><i class="fas fa-users"></i> {{ count($artist->followers) }}</span>
-                <span class="mx-2"><i class="fas fa-heart"></i> {{ $total_favourites }}</span>
+                <span class="mx-2" title="Followers"><i class="fas fa-users"></i> {{ count($artist->followers) }}</span>
+                <span class="mx-2" title="Likes"><i class="fas fa-heart"></i> {{ $total_favourites }}</span>
             </div>
 
             <!-- Follow button -->
@@ -137,7 +137,7 @@
             </h2>
 
             <div class="d-flex flex-wrap">
-            @forelse ($artworks as $artwork)
+            @forelse ($artworks->sortByDesc('created_at') as $artwork)
 
                 <div class="thumbnail-art rounded border">
                     <a href="{{ url('/art/'.$artwork->id) }}">

@@ -34,23 +34,23 @@
             <span id="favourite-icon-{{ $artwork->id }}">
             @auth
                 @if(!$isFavourite)
-                    <a title="Favourite" class="btn btn-link py-0 px-1" style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('favourite-form-{{ $artwork->id }}').submit(); favouriteUpdate(true, {{ $artwork->id }}, {{ count($artwork->favourites) }});">
+                    <a title="Likes" class="btn btn-link py-0 px-1" style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('favourite-form-{{ $artwork->id }}').submit(); favouriteUpdate(true, {{ $artwork->id }}, {{ count($artwork->favourites) }});">
                         <i class="far fa-heart"></i> {{ count($artwork->favourites) }}
                     </a>
                     
                 @else
-                    <a title="Favourite" class="btn btn-link py-0 px-1" style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('unfavourite-form-{{ $artwork->id }}').submit(); favouriteUpdate(false, {{ $artwork->id }}, {{ count($artwork->favourites) }});">
+                    <a title="Likes" class="btn btn-link py-0 px-1" style="font-size: 1.125rem" onclick="event.preventDefault(); document.getElementById('unfavourite-form-{{ $artwork->id }}').submit(); favouriteUpdate(false, {{ $artwork->id }}, {{ count($artwork->favourites) }});">
                         <i class="fas fa-heart text-danger"></i> {{ count($artwork->favourites) }}
                     </a>
                 @endif
             @else
-                <a title="Favourite" class="btn btn-link text-dark py-0 px-1" style="font-size: 1.125rem">
+                <a title="Likes" class="btn btn-link text-dark py-0 px-1" style="font-size: 1.125rem">
                     <i class="far fa-heart"></i> {{ count($artwork->favourites) }}
                 </a>
             @endauth
             </span>
             
-            <a title="Comment" class="btn btn-link text-dark text-decoration-none py-0 px-1" href="#comment" style="font-size: 1.125rem">
+            <a title="Comments" class="btn btn-link text-dark text-decoration-none py-0 px-1" href="#comment" style="font-size: 1.125rem">
                 <i class="far fa-comment"></i> {{ count($comments) }}
             </a>
             

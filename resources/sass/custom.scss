@@ -1,7 +1,10 @@
 // Custom CSS
 html {
-	scroll-behavior: smooth;
-	
+    scroll-behavior: smooth;
+}
+
+html, body {
+    min-height: 100%;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -10,13 +13,29 @@ html {
 	}
 }
 
-// Square Thumbnail
-.thumbnail-art {
+a:hover {
+    text-decoration: none;
+}
+
+/* Artwork Thumbnail */
+.thumbnail-art, .thumbnail-art-title {
     position: relative;
-    width: calc(50% - .25rem);
     margin: .125rem;
-    background-color: lightgrey;
     overflow: hidden;
+}
+
+.thumbnail-art {
+    width: calc(50% - .25rem);
+    background-color: lightgrey;
+}
+
+.thumbnail-art-title {
+    width: calc(33.3% - .25rem);
+}
+
+.thumbnail-art-title > .thumbnail-art {
+    width: 100%;
+    margin: 0;
 }
   
 .thumbnail-art:after {
@@ -71,13 +90,56 @@ html {
     font-size: .75rem;
 }
 
-// Media Queries
-@media (max-width: 768px) {
-    .thumbnail-art {
-        width: 500px;
+/* Artist Thumbnail */
+.thumbnail-artist {
+    margin: .5rem .25rem;
+    width: calc(25% - .5rem);
+    overflow: hidden;
+    position: relative;
+    background-color: #fff;
+}
+
+.thumbnail-artist .cover-image {
+    object-fit: cover; 
+    width: 100%; 
+    height:10rem;
+    background-color: theme-color("whitesmoke");
+}
+
+.thumbnail-artist .profile-image {
+    object-fit: cover; 
+    width: 5rem; 
+    height: 5rem;
+    background-color: theme-color("whitesmoke");
+    position: absolute;
+    top: 7.5rem;
+    left: .5rem;
+}
+
+.thumbnail-artist .thumbnail-content .name {
+    padding: .5rem 0 0 6rem;
+}
+
+/** Media Queries **/
+// Large devices (desktops, 992px and up)
+@include media-breakpoint-down(md) { 
+    .thumbnail-artist, .thumbnail-art-title {
+        width: calc(50% - .5rem);
     }
 }
 
+// Mobile
+@include media-breakpoint-down(sm) {
+    .thumbnail-art {
+        width: 500px;
+    }
+
+    .thumbnail-artist {
+        width: calc(100% - .5rem);
+    }
+}
+
+// 1920x1080 screen and above
 @media (min-width: 1920px) { 
     .container {
         max-width: 1318px;

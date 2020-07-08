@@ -2,22 +2,92 @@
 
 @section('content')
 <div class="container">
-    <h1>Artists</h1>
+    <div class="d-flex justify-content-between px-1">
+        <h1 class="align-self-end">Artists</h1>
+        <form action="{{ route('artist.index') }}" method="GET" class="form-inline">
+            <div class="form-group">
+                <label for="sort" class="mr-2">Sort by</label>
+                <select id="sort" name="sort" class="form-control form-control-sm border-0 bg-whitesmoke" onchange="if(this.value != 0) { this.form.submit(); }">
+                    <option value="newest" @if ( app('request')->input('sort') == 'newest' || app('request')->input('sort') == null) selected @endif>Newest</option>
+                    <option value="oldest" @if ( app('request')->input('sort') == 'oldest') selected @endif>Oldest</option>
+                    <option value="a-z" @if ( app('request')->input('sort') == 'a-z') selected @endif>A to Z</option>
+                    <option value="z-a" @if ( app('request')->input('sort') == 'z-a') selected @endif>Z to A</option>
+                </select>
+            </div>
+        </form>
+    </div>
 
-    <div class="card-group">
+    <div class="d-flex flex-wrap">
         @if(count($artists) > 0)
-            @foreach ($artists as $artist)
-                <a href="{{ url('/'.$artist->url) }}">
-                    <div class="card m-1" style="width: 12rem;">
-                        <div class="card-img-top" style="overflow:hidden; height: 12rem">
-                            <img src="/storage/img/avatar/{{ $artist->avatar }}" alt="{{ $artist->name }}" style="object-fit: cover; width: 12rem; height:12rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+            <!-- Display all artist with sort option -->
+            @if ( app('request')->input('sort') == 'newest' || app('request')->input('sort') == null )
+                @foreach ($artists->sortByDesc('created_at') as $artist)
+                    <a href="{{ url('/'.$artist->url) }}" class="thumbnail-artist">
+                        @if ( array_first($artist->artworks) )
+                            <img class="cover-image rounded border border-whitesmoke" src="/storage/img/artwork/{{ array_first($artist->artworks->sortByDesc('created_at'))->filename }}" alt="{{ array_first($artist->artworks->sortByDesc('created_at'))->title }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                        @else
+                            <div class="cover-image rounded border border-whitesmoke"></div>
+                        @endif
+
+                        <img class="profile-image border rounded-circle" src="/storage/img/avatar/{{ $artist->avatar }}" alt="{{ $artist->name }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+
+                        <div class="thumbnail-content">
+                            <h5 class="name pb-2 text-truncate" title="{{ $artist->name }}">{{ $artist->name }}</h5>
                         </div>
-                        <div class="card-body p-0">
-                            <h5 class="card-title pt-2 pl-3">{{ $artist->name }}</h5>
+                    </a>
+                @endforeach
+
+            @elseif(app('request')->input('sort') == 'oldest')
+                @foreach ($artists->sortBy('created_at') as $artist)
+                    <a href="{{ url('/'.$artist->url) }}" class="thumbnail-artist">
+                        @if ( array_first($artist->artworks) )
+                            <img class="cover-image rounded border border-whitesmoke" src="/storage/img/artwork/{{ array_first($artist->artworks->sortByDesc('created_at'))->filename }}" alt="{{ array_first($artist->artworks->sortByDesc('created_at'))->title }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                        @else
+                            <div class="cover-image rounded border border-whitesmoke"></div>
+                        @endif
+
+                        <img class="profile-image border rounded-circle" src="/storage/img/avatar/{{ $artist->avatar }}" alt="{{ $artist->name }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+
+                        <div class="thumbnail-content">
+                            <h5 class="name pb-2 text-truncate" title="{{ $artist->name }}">{{ $artist->name }}</h5>
                         </div>
-                    </div>
-                </a>
-            @endforeach
+                    </a>
+                @endforeach
+
+            @elseif(app('request')->input('sort') == 'a-z')
+                @foreach ($artists->sortBy('name') as $artist)
+                    <a href="{{ url('/'.$artist->url) }}" class="thumbnail-artist">
+                        @if ( array_first($artist->artworks) )
+                            <img class="cover-image rounded border border-whitesmoke" src="/storage/img/artwork/{{ array_first($artist->artworks->sortByDesc('created_at'))->filename }}" alt="{{ array_first($artist->artworks->sortByDesc('created_at'))->title }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                        @else
+                            <div class="cover-image rounded border border-whitesmoke"></div>
+                        @endif
+
+                        <img class="profile-image border rounded-circle" src="/storage/img/avatar/{{ $artist->avatar }}" alt="{{ $artist->name }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+
+                        <div class="thumbnail-content">
+                            <h5 class="name pb-2 text-truncate" title="{{ $artist->name }}">{{ $artist->name }}</h5>
+                        </div>
+                    </a>
+                @endforeach
+                
+            @elseif(app('request')->input('sort') == 'z-a')
+                @foreach ($artists->sortByDesc('name') as $artist)
+                    <a href="{{ url('/'.$artist->url) }}" class="thumbnail-artist">
+                        @if ( array_first($artist->artworks) )
+                            <img class="cover-image rounded border border-whitesmoke" src="/storage/img/artwork/{{ array_first($artist->artworks->sortByDesc('created_at'))->filename }}" alt="{{ array_first($artist->artworks->sortByDesc('created_at'))->title }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+                        @else
+                            <div class="cover-image rounded border border-whitesmoke"></div>
+                        @endif
+
+                        <img class="profile-image border rounded-circle" src="/storage/img/avatar/{{ $artist->avatar }}" alt="{{ $artist->name }}" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
+
+                        <div class="thumbnail-content">
+                            <h5 class="name pb-2 text-truncate" title="{{ $artist->name }}">{{ $artist->name }}</h5>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
         @else
             <p>No artist available.</p>
         @endif

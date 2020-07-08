@@ -40,6 +40,6 @@ class DashboardController extends Controller
 
         $feeds = Artwork::whereIn('artist_id', $artists_id)->orderBy('created_at','DESC')->paginate(20);
    
-        return view('dashboard.dashboard')->with('artist', $user->artist)->with('follows', $follows)->with('feeds', $feeds)->with('favourites', $favourites);
+        return view('dashboard.dashboard')->with('user', $user)->with('artist', $user->artist)->with('feeds', $feeds)->with('favourites', $favourites);
     }
 }
