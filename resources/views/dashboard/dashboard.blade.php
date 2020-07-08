@@ -49,7 +49,7 @@
 
                 <div class="text-center bg-whitesmoke rounded px-3 py-4">
                     <h5>Are you an artist?</h5>
-                    <a class="btn btn-secondary" href="{{ route('artist.create') }}" role="button">Create Artist Profile</a>
+                    <a class="btn btn-secondary" href="{{ route('artist.create') }}" role="button">Create Profile</a>
                 </div>
             @endif
 

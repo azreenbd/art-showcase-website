@@ -52,17 +52,23 @@
                 <div class="form-group">
                     <div class="text-danger">* Required</div>
                 </div>
-        
-                <button type="submit" class="btn btn-primary">
-                    Save
-                </button>
+                
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Save
+                    </button>
+                </div>
             </form>
+
+            <hr>
 
             <!-- Delete comment -->
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#deleteArtworkModal">
+            <div class="text-center">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteArtworkModal">
                 Delete
             </button>
+            </div>
             
             <!-- Modal -->
             <div class="modal fade" id="deleteArtworkModal" tabindex="-1" role="dialog" aria-labelledby="deleteArtworkModalLabel" aria-hidden="true">

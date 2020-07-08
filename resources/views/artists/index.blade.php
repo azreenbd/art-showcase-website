@@ -7,7 +7,7 @@
         <form action="{{ route('artist.index') }}" method="GET" class="form-inline">
             <div class="form-group">
                 <label for="sort" class="mr-2">Sort by</label>
-                <select id="sort" name="sort" class="form-control form-control-sm border-0 bg-whitesmoke" onchange="if(this.value != 0) { this.form.submit(); }">
+                <select id="sort" name="sort" class="form-control form-control-sm" onchange="if(this.value != 0) { this.form.submit(); }">
                     <option value="newest" @if ( app('request')->input('sort') == 'newest' || app('request')->input('sort') == null) selected @endif>Newest</option>
                     <option value="oldest" @if ( app('request')->input('sort') == 'oldest') selected @endif>Oldest</option>
                     <option value="a-z" @if ( app('request')->input('sort') == 'a-z') selected @endif>A to Z</option>

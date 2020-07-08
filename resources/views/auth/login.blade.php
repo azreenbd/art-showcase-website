@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-4">
-            
             <h2 class="text-center pb-5">{{ __('Login') }}</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
@@ -12,7 +11,7 @@
                 <div class="form-group">
                     <label for="email" class="text-muted">{{ __('E-Mail Address') }}</label>
 
-                    <input id="email" type="email" class="py-4 form-control form-control-lg bg-whitesmoke border-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="email" type="email" class="py-4 form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" placeholder="E-mail" autofocus>
 
                     @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -24,7 +23,7 @@
                 <div class="form-group">
                     <label for="password" class="text-muted">{{ __('Password') }}</label>
 
-                    <input id="password" type="password" class="py-4 form-control form-control-lg bg-whitesmoke border-0 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <input id="password" type="password" class="py-4 form-control form-control-lg @error('password') is-invalid @enderror" name="password" autocomplete="current-password" placeholder="Password">
 
                     @error('password')
                         <span class="invalid-feedback" role="alert">

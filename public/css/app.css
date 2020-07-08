@@ -17373,6 +17373,16 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+.form-control,
+.form-control:focus {
+  background-color: whitesmoke;
+  border-color: whitesmoke;
+}
+
+.input-group-text {
+  border-color: #e9ecef;
+}
+
 html {
   scroll-behavior: smooth;
 }

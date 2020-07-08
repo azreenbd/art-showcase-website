@@ -17,4 +17,5 @@ $fa-font-path: "../webfonts";
 @import '~@fortawesome/fontawesome-free/scss/brands.scss';
 
 // Custom CSS
-@import 'custom';
+@import 'custom-bootstrap'; // bootsrap override
+@import 'style'; // custom css

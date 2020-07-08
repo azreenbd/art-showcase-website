@@ -75,7 +75,7 @@
                     @csrf
                     <input type="hidden" id="artwork_id" name="artwork_id" value="{{ $artwork->id }}">
                     <div class="d-flex">
-                        <div class="p-1">
+                        <div class="p-1 align-self-center">
                             <!-- if user have an artist profile -->
                             @if(Auth::user()->artist)
                                 <img src="{{ url('/storage/img/avatar/'.Auth::user()->artist->avatar) }}" class="rounded-circle border" style="object-fit: cover; width: 2.5rem; height:2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
@@ -83,7 +83,7 @@
                                 <img src="{{ url('/storage/img/avatar/_default.jpg') }}" class="rounded-circle border" style="object-fit: cover; width: 2.5rem; height: 2.5rem;" ondragstart="return false;" onselectstart="return false;" oncontextmenu="return false;">
                             @endif
                         </div>
-                        <div class="flex-fill p-1">
+                        <div class="flex-fill p-1 align-self-center">
                             <label class="sr-only" for="comment">Comment</label>
                             <input id="comment" type="text" class="form-control @error('comment') is-invalid @enderror" name="comment" value="{{ old('comment') }}" placeholder="Write a comment...">
 
@@ -93,7 +93,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="p-1">
+                        <div class="p-1 align-self-center">
                             <button type="submit" class="btn btn-primary" title="Add comment">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
