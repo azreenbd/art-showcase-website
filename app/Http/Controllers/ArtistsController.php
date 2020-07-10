@@ -28,11 +28,27 @@ class ArtistsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $artists = Artist::paginate(50);
+        $artists_per_page = 32;
 
-        return view('artists.index')->with('artists', $artists);
+        if ($request['sort'] == "newest") {
+            $artists = Artist::where('id', '>', 0)->orderBy('created_at', 'desc')->paginate($artists_per_page);
+        }
+        elseif ($request['sort'] == "oldest") {
+            $artists = Artist::where('id', '>', 0)->orderBy('created_at', 'asc')->paginate($artists_per_page);
+        }
+        elseif ($request['sort'] == "a-z") {
+            $artists = Artist::where('id', '>', 0)->orderBy('name', 'asc')->paginate($artists_per_page);
+        }
+        elseif ($request['sort'] == "z-a") {
+            $artists = Artist::where('id', '>', 0)->orderBy('name', 'desc')->paginate($artists_per_page);
+        }
+        else {
+            $artists = Artist::where('id', '>', 0)->orderBy('name', 'asc')->paginate($artists_per_page);
+        }
+
+        return view('artists.index')->with('artists', $artists->appends(Input::except('page')));
     }
 
     /**
